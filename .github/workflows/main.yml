@@ -20,16 +20,18 @@ jobs:
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+      with:
+        cmdline-tools-version: 'latest'
+        packages: 'platforms;android-34 build-tools;34.0.0'
 
-    - name: Make gradlew executable and build APK
+    - name: Build APK with Gradle
       run: |
         cd launcher
         chmod +x gradlew
-        # Build the release APK directly, skipping the TV install step
         ./gradlew assembleRelease
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: cleanyourtv-launcher-apk
-        path: launcher/app/build/outputs/apk/release/app-release.apk
+        path: launcher/app/build/outputs/apk/release/*.apk
