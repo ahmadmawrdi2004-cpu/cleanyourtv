@@ -3,7 +3,7 @@ name: Build Launcher APK
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: # يسمح لك بتشغيل البناء يدويًا
+  workflow_dispatch:
 
 jobs:
   build:
@@ -21,15 +21,14 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Build APK
+    - name: Build Release APK
       run: |
         cd launcher
-        chmod +x build-and-install.sh
-        # هذا الأمر يبني ملف APK فقط دون محاولة تثبيته على تلفاز
-        ./build-and-install.sh --build-only
+        chmod +x gradlew
+        ./gradlew assembleRelease
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: cleanyourtv-launcher
-        path: launcher/build/outputs/apk/**/*.apk
+        path: launcher/app/build/outputs/apk/release/app-release.apk
